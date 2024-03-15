@@ -10,7 +10,7 @@ class CreateAccountPage extends StatefulWidget {
 class _CreateAccountPageState extends State<CreateAccountPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final FirebaseAuth _auth = FirebaseAuth.instance; // Use FirebaseAuth
+  final FirebaseAuth _auth = FirebaseAuth.instance; 
 
   Future<void> createUser(BuildContext context) async {
     try {
@@ -19,7 +19,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
         password: _passwordController.text.trim(),
       );
 
-      // After successful account creation, navigate to the login page
+     
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => LoginPage()),
@@ -74,15 +74,15 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
             ElevatedButton(
               onPressed: () => createUser(context),
               style: ElevatedButton.styleFrom(
-                primary: Colors.black, // Button background color
-                onPrimary: Colors.white, // Button text color
+                primary: Colors.black, 
+                onPrimary: Colors.white, 
               ),
               child: Text('Create Account'),
             ),
-            SizedBox(height: 20), // Add some spacing
+            SizedBox(height: 20), 
             TextButton(
               onPressed: () {
-                // Navigate to the LoginPage
+                
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => LoginPage()),
@@ -90,7 +90,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
               },
               child: Text('Already have an account? Login',
                   style: TextStyle(
-                      color: Colors.black)), // Text color set to black
+                      color: Colors.black)), 
             ),
           ],
         ),

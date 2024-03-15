@@ -20,6 +20,14 @@ class _NotePageState extends State<NotePage> {
     _fetchNotes();
   }
 
+  void _signOutAndNavigateToLogin(BuildContext context) async {
+    await _auth.signOut();
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()),
+    );
+  }
+
   void _addNote() async {
     final String noteContent = _noteController.text.trim();
     if (noteContent.isNotEmpty) {
@@ -27,7 +35,6 @@ class _NotePageState extends State<NotePage> {
       if (user != null) {
         DocumentReference userDoc =
             _firestore.collection('users').doc(user.uid);
-
         await userDoc.set({
           'notes': FieldValue.arrayUnion([noteContent])
         }, SetOptions(merge: true));
@@ -42,11 +49,9 @@ class _NotePageState extends State<NotePage> {
     User? user = _auth.currentUser;
     if (user != null) {
       DocumentReference userDoc = _firestore.collection('users').doc(user.uid);
-
       await userDoc.update({
         'notes': FieldValue.arrayRemove([noteToDelete])
       });
-
       _fetchNotes();
     }
   }
@@ -71,6 +76,12 @@ class _NotePageState extends State<NotePage> {
       appBar: AppBar(
         title: Text('Your Notes'),
         backgroundColor: Colors.orange,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () => _signOutAndNavigateToLogin(context),
+          ),
+        ],
       ),
       body: Container(
         color: Colors.orange,
@@ -80,15 +91,18 @@ class _NotePageState extends State<NotePage> {
             TextField(
               controller: _noteController,
               decoration: InputDecoration(
-                  labelText: 'Enter your note here',
-                  fillColor: Colors.white,
-                  filled: true),
+                labelText: 'Enter your note here',
+                fillColor: Colors.white,
+                filled: true,
+              ),
             ),
             SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: _addNote,
               style: ElevatedButton.styleFrom(
-                  primary: Colors.black, onPrimary: Colors.white),
+                primary: Colors.black,
+                onPrimary: Colors.white,
+              ),
               child: Text('Add Note'),
             ),
             SizedBox(height: 20.0),
